@@ -12,10 +12,12 @@ public class PlayerController : MonoBehaviour
     public float timeElapsed = 0f;
     public bool gameStarted = false;
     public bool gameFinished = false;
+    private Animator animator;
     // Start is called before the first frame update
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
         time.text = "";
         
     }
@@ -37,13 +39,13 @@ public class PlayerController : MonoBehaviour
          if (Input.GetKeyDown(KeyCode.Space) && groundDistance.distance <=1){
             moveUp = 5 * transform.up;
         }
-        velo = (moveVer + moveHor) * -speed + moveUp;
+        velo = (moveVer + moveHor) * speed + moveUp;
     
         rigidbody.velocity = velo;
         float mouseX = Input.GetAxis ("Mouse X");  
         transform.Rotate(0, mouseX * 8, 0);
     
-        if(rigidbody.position.z < 24.63 && rigidbody.position.x > -25.58 && !gameFinished){
+        if((rigidbody.position.z < 24.63 || gameStarted) && rigidbody.position.x > -25.58 && !gameFinished){
             gameStarted = true;
             timeElapsed += Time.deltaTime;
             time.text = "Gecen Zaman: "+ timeElapsed.ToString("0");    
